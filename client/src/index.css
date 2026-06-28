@@ -1,0 +1,442 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════
+   COLOR SYSTEM (per spec)
+   Background:   #F8FAFC
+   Sidebar/Nav:  #0F172A (deep navy)
+   Primary btn:  #7C3AED (purple)
+   Secondary btn:#2563EB (blue)
+   Success:      #16A34A
+   Warning:      #D97706
+   Danger:       #DC2626
+   Card bg:      white, shadow 0 1px 3px rgba(0,0,0,0.1)
+   Card radius:  12px   Button radius: 8px
+═══════════════════════════════════════════════════════════════ */
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  html {
+    font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #F8FAFC;
+    color: #0F172A;
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  #root { min-height: 100vh; }
+
+  /* Min tap target size */
+  button, a, [role="button"] { min-height: 44px; min-width: 44px; }
+  /* But allow small badges/icons to opt out */
+  .no-min-tap { min-height: unset; min-width: unset; }
+}
+
+@layer components {
+
+  /* ─── Buttons ─────────────────────────────────────────────────────────── */
+  .btn-primary {
+    @apply text-white font-semibold py-2.5 px-5 transition-all duration-200
+           active:scale-95 shadow-md text-sm inline-flex items-center justify-center gap-2;
+    background-color: #7C3AED;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  .btn-primary:hover {
+    background-color: #6D28D9;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.4);
+    color: #ffffff;
+  }
+  .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-secondary {
+    @apply font-semibold py-2.5 px-5 transition-all duration-200
+           active:scale-95 shadow-sm text-sm inline-flex items-center justify-center gap-2;
+    background-color: #2563EB;
+    color: #ffffff;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  .btn-secondary:hover {
+    background-color: #1D4ED8;
+    color: #ffffff;
+    box-shadow: 0 4px 16px rgba(37,99,235,0.35);
+  }
+  .btn-secondary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .btn-outline {
+    @apply font-semibold py-2.5 px-5 transition-all duration-200 active:scale-95 text-sm
+           border inline-flex items-center justify-center gap-2;
+    border-color: #7C3AED;
+    color: #7C3AED;
+    background-color: transparent;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  .btn-outline:hover {
+    background-color: #7C3AED;
+    color: #ffffff;
+  }
+
+  .btn-danger {
+    @apply text-white font-semibold py-2.5 px-5 transition-all duration-200
+           active:scale-95 shadow-sm text-sm inline-flex items-center justify-center gap-2;
+    background-color: #DC2626;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  .btn-danger:hover { background-color: #B91C1C; color: #ffffff; }
+
+  .btn-ghost {
+    @apply font-medium py-2 px-4 transition-all duration-200 active:scale-95 text-sm
+           inline-flex items-center justify-center gap-2;
+    color: #475569;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  .btn-ghost:hover { background-color: #0F172A; color: #ffffff; }
+
+  /* ─── Cards ───────────────────────────────────────────────────────────── */
+  .card {
+    @apply bg-white border border-gray-100 p-6 transition-all duration-200;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .card-hover {
+    @apply card cursor-pointer;
+  }
+  .card-hover:hover {
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+  }
+
+  .stat-card {
+    @apply text-white relative overflow-hidden;
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  /* ─── Form Inputs ─────────────────────────────────────────────────────── */
+  .input {
+    @apply w-full px-4 py-3 border border-gray-200 bg-white
+           placeholder-gray-400 text-sm
+           focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
+           transition-all duration-200;
+    color: #0F172A;
+    border-radius: 8px;
+    min-height: 44px;
+  }
+  .input:hover { border-color: #7C3AED; }
+
+  .label { @apply block text-sm font-semibold text-gray-700 mb-1.5; }
+
+  /* ─── Badges ──────────────────────────────────────────────────────────── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-0.5 text-xs font-semibold no-min-tap;
+    border-radius: 20px;
+  }
+  .badge-purple { @apply badge bg-purple-100 text-purple-700; }
+  .badge-blue   { @apply badge bg-blue-100 text-blue-700; }
+  .badge-green  { @apply badge bg-green-100 text-green-700; }
+  .badge-yellow { @apply badge bg-yellow-100 text-yellow-800; }
+  .badge-red    { @apply badge bg-red-100 text-red-700; }
+  .badge-gray   { @apply badge bg-gray-100 text-gray-700; }
+  .badge-orange { @apply badge bg-orange-100 text-orange-700; }
+
+  /* ─── Sidebar ─────────────────────────────────────────────────────────── */
+  /* Sidebar ALWAYS sits on #0F172A (deep navy) — text must be light */
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-3 text-sm font-medium
+           transition-all duration-200 cursor-pointer;
+    border-radius: 10px;
+    color: #94A3B8;         /* slate-400 — clearly visible on navy */
+    min-height: 44px;
+  }
+  .sidebar-link:hover {
+    background-color: rgba(124, 58, 237, 0.2);  /* purple tint */
+    color: #FFFFFF;         /* pure white — always visible on navy hover */
+  }
+  .sidebar-link.active {
+    background: linear-gradient(135deg, #7C3AED 0%, #2563EB 100%);
+    color: #FFFFFF;
+    box-shadow: 0 4px 15px rgba(124,58,237,0.35);
+  }
+  .sidebar-link.active:hover {
+    background: linear-gradient(135deg, #6D28D9 0%, #1D4ED8 100%);
+    color: #FFFFFF;
+  }
+
+  /* ─── Bottom Nav ──────────────────────────────────────────────────────── */
+  .bottom-nav-item {
+    @apply flex flex-col items-center gap-1 px-3 py-2 transition-all duration-200 cursor-pointer;
+    border-radius: 10px;
+    color: #64748B;
+    min-width: 52px;
+    min-height: 52px;
+  }
+  .bottom-nav-item:hover {
+    color: #7C3AED;
+    background-color: #f3f0ff;
+  }
+  .bottom-nav-item.active {
+    color: #7C3AED;
+    background-color: #f3f0ff;
+  }
+
+  /* ─── Tables ──────────────────────────────────────────────────────────── */
+  .table {
+    @apply w-full text-sm text-left;
+  }
+  .table th {
+    @apply px-4 py-3 font-semibold text-gray-500 uppercase text-xs tracking-wider
+           border-b border-gray-100 bg-gray-50/50;
+  }
+  .table td {
+    @apply px-4 py-3 text-gray-700 border-b border-gray-50;
+  }
+  .table tr:last-child td { border-bottom: none; }
+  .table tr:hover td { background-color: #fafafa; }
+
+  /* ─── Kanban / Pipeline ───────────────────────────────────────────────── */
+  .kanban-col {
+    @apply flex flex-col gap-3 min-h-[200px] p-3 bg-gray-50 border border-gray-200;
+    border-radius: 12px;
+  }
+  .pipeline-col {
+    @apply flex flex-col gap-2 min-h-[300px] p-3 bg-gray-50/80 border border-gray-200 min-w-[200px];
+    border-radius: 12px;
+  }
+  .stage-pill {
+    @apply px-3 py-1.5 text-xs font-semibold cursor-pointer border-2 transition-all duration-200 no-min-tap;
+    border-radius: 20px;
+  }
+
+  /* ─── KPI Card ────────────────────────────────────────────────────────── */
+  .kpi-card {
+    @apply text-white relative overflow-hidden cursor-pointer transition-all duration-200;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .kpi-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  }
+
+  /* ─── Activity feed ───────────────────────────────────────────────────── */
+  .activity-item {
+    @apply flex items-start gap-3 p-3 transition-colors duration-150;
+    border-radius: 10px;
+  }
+  .activity-item:hover { background-color: #f8fafc; }
+
+  /* ─── Work & call logs ────────────────────────────────────────────────── */
+  .work-log-card {
+    @apply bg-gray-50 p-3 border border-gray-100 text-sm text-gray-700;
+    border-radius: 10px;
+  }
+  .call-log-item {
+    @apply flex items-start gap-3 p-3 bg-gray-50 border border-gray-100;
+    border-radius: 10px;
+  }
+
+  /* ─── Tag ─────────────────────────────────────────────────────────────── */
+  .tag {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium bg-gray-100 text-gray-600 no-min-tap;
+    border-radius: 6px;
+  }
+
+  /* ─── Empty states ────────────────────────────────────────────────────── */
+  .empty-state {
+    @apply flex flex-col items-center justify-center py-16 text-center gap-4;
+  }
+  .empty-state-icon {
+    @apply w-20 h-20 rounded-full flex items-center justify-center;
+    background: linear-gradient(135deg, #f3f0ff 0%, #ede9fe 100%);
+  }
+
+  /* ─── Pagination ──────────────────────────────────────────────────────── */
+  .pagination-btn {
+    @apply w-8 h-8 flex items-center justify-center text-sm font-medium transition-colors no-min-tap;
+    border-radius: 8px;
+  }
+  .pagination-btn:hover { background-color: #f3f0ff; color: #7C3AED; }
+  .pagination-btn.active {
+    background-color: #7C3AED;
+    color: white;
+  }
+  .pagination-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* ─── Scrollbar ───────────────────────────────────────────────────────── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+  /* ─── Mobile slide-up modal ───────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .modal-panel {
+      position: fixed !important;
+      bottom: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      top: auto !important;
+      border-radius: 20px 20px 0 0 !important;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in  { animation: fadeIn 0.3s ease both; }
+  .animate-slide-up { animation: fadeIn 0.4s ease both; }
+}
+
+/* ════ Utilities ════ */
+.text-navy   { color: #0F172A; }
+.bg-navy     { background-color: #0F172A; }
+.text-purple { color: #7C3AED; }
+
+/* Skeleton loader */
+.skeleton {
+  background: linear-gradient(90deg, #f0f4f8 25%, #e2e8f0 50%, #f0f4f8 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 10px;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ════════ DARK MODE ════════ */
+.dark body {
+  background-color: #0F172A;
+  color: #F8FAFC;
+}
+
+.dark .card, .dark .kanban-col, .dark .pipeline-col {
+  background-color: #1E293B;
+  border-color: #334155;
+  color: #F8FAFC;
+}
+
+.dark .input, .dark select, .dark textarea {
+  background-color: #1E293B;
+  border-color: #334155;
+  color: #F8FAFC;
+}
+.dark .input::placeholder { color: #64748B; }
+
+/* Header in dark mode */
+.dark header {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+  border-color: #1E293B !important;
+}
+
+.dark h1, .dark h2, .dark h3, .dark h4 { color: #F8FAFC; }
+
+/* Text utility overrides */
+.dark .text-gray-900 { color: #F8FAFC; }
+.dark .text-gray-700 { color: #E2E8F0; }
+.dark .text-gray-600 { color: #CBD5E1; }
+.dark .text-gray-500 { color: #94A3B8; }
+.dark .text-navy, .dark .text-navy { color: #F8FAFC !important; }
+
+.dark .border-gray-100, .dark .border-gray-200 { border-color: #334155; }
+.dark .bg-white  { background-color: #1E293B; }
+.dark .bg-gray-50, .dark .bg-gray-100 { background-color: #0F172A; }
+.dark .bg-gray-50\/50, .dark .bg-gray-50\/80 { background-color: rgba(15,23,42,0.5); }
+
+.dark .work-log-card, .dark .call-log-item { background-color: #0F172A; border-color: #334155; }
+.dark .activity-item:hover { background-color: #334155; }
+.dark .table th { background-color: #0F172A; color: #64748B; border-color: #334155; }
+.dark .table td { color: #E2E8F0; border-color: #1E293B; }
+.dark .table tr:hover td { background-color: rgba(51,65,85,0.3); }
+
+/* Dark mode buttons */
+.dark .btn-secondary {
+  background-color: #2563EB;
+  color: #ffffff;
+  border-color: #2563EB;
+}
+.dark .btn-secondary:hover { background-color: #1D4ED8; }
+
+.dark .btn-outline {
+  border-color: #7C3AED;
+  color: #A78BFA;
+}
+.dark .btn-outline:hover { background-color: #7C3AED; color: #ffffff; }
+
+.dark .btn-ghost { color: #94A3B8; }
+.dark .btn-ghost:hover { background-color: #334155; color: #F8FAFC; }
+
+/* Bottom nav dark */
+.dark .bottom-nav-item { color: #64748B; }
+.dark .bottom-nav-item:hover { background-color: rgba(124,58,237,0.15); color: #A78BFA; }
+.dark .bottom-nav-item.active { color: #A78BFA; background-color: rgba(124,58,237,0.15); }
+
+/* Sidebar active in dark (still navy bg — sidebar is always dark) */
+.dark .sidebar-link { color: #94A3B8; }
+.dark .sidebar-link:hover { background-color: rgba(124,58,237,0.25); color: #ffffff; }
+.dark .sidebar-link.active { color: #ffffff; }
+
+/* Modal dark */
+.dark .bg-white.rounded-2xl { background-color: #1E293B; color: #F8FAFC; }
+.dark .modal-panel { background-color: #1E293B !important; color: #F8FAFC; }
+
+/* Badge dark-mode tweaks */
+.dark .badge-purple { background-color: rgba(124,58,237,0.2); color: #A78BFA; }
+.dark .badge-blue   { background-color: rgba(37,99,235,0.2);  color: #93C5FD; }
+.dark .badge-green  { background-color: rgba(22,163,74,0.2);  color: #86EFAC; }
+.dark .badge-yellow { background-color: rgba(217,119,6,0.2);  color: #FCD34D; }
+.dark .badge-red    { background-color: rgba(220,38,38,0.2);  color: #FCA5A5; }
+.dark .badge-gray   { background-color: rgba(100,116,139,0.2); color: #CBD5E1; }
+
+/* Empty state dark */
+.dark .empty-state-icon { background: rgba(124,58,237,0.1); }
+
+/* Kanban dark */
+.dark .kanban-col  { background-color: #1E293B; border-color: #334155; }
+.dark .pipeline-col{ background-color: #1E293B; border-color: #334155; }
+
+/* Tag dark */
+.dark .tag { background-color: #334155; color: #CBD5E1; }
+
+/* Skeleton dark */
+.dark .skeleton {
+  background: linear-gradient(90deg, #1E293B 25%, #334155 50%, #1E293B 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Footer */
+.app-footer {
+  @apply text-center py-3 text-xs text-gray-400 border-t border-gray-100;
+}
+.dark .app-footer { color: #475569; border-color: #1E293B; }
