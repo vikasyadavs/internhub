@@ -5,6 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 dotenv.config();
 
 const isMock = !process.env.SUPABASE_URL ||
@@ -30,7 +33,6 @@ if (!isMock) {
 } else {
   console.log('⚠️ Supabase credentials not configured. Using local JSON Database (db.json)');
   
-  const __dirname = path.dirname(fileURLToPath(import.meta.url));
   const dbPath = path.resolve(__dirname, '../../db.json');
 
   const readDb = () => {

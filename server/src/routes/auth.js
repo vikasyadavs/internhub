@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 import { body, validationResult } from 'express-validator';
 import supabase from '../config/supabase.js';
 import { authenticate } from '../middleware/auth.js';
@@ -12,6 +12,11 @@ const router = express.Router();
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5,
+  keyGenerator: (req) => {
+    const forwardedFor = req.headers['x-forwarded-for']?.split(',')[0]?.trim();
+    const netlifyIp = req.headers['x-nf-client-connection-ip'];
+    return ipKeyGenerator(netlifyIp || forwardedFor || req.ip || req.socket?.remoteAddress || '127.0.0.1');
+  },
   message: { success: false, message: 'Too many login attempts. Please try again in 15 minutes.' },
   standardHeaders: true,
   legacyHeaders: false,
