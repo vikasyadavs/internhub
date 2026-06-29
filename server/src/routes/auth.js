@@ -54,6 +54,11 @@ router.post('/login', loginLimiter, [
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not configured.');
+      return res.status(500).json({ success: false, message: 'Server authentication is not configured.' });
+    }
+
     const token = jwt.sign(
       { id: user.id, role: user.role },
       process.env.JWT_SECRET,

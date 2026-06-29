@@ -2,19 +2,28 @@ import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { v4 as uuidv4 } from 'uuid';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const cwd = process.cwd();
+const serverRoot = path.basename(cwd) === 'server'
+  ? cwd
+  : path.resolve(cwd, 'server');
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(serverRoot, '.env') });
 dotenv.config();
 
-const isMock = !process.env.SUPABASE_URL ||
+const hasMissingSupabaseConfig = !process.env.SUPABASE_URL ||
   process.env.SUPABASE_URL.includes('YOUR_PROJECT') ||
   process.env.SUPABASE_URL === 'https://placeholder.supabase.co' ||
   !process.env.SUPABASE_SERVICE_KEY ||
   process.env.SUPABASE_SERVICE_KEY === 'placeholder';
+const isHostedRuntime = process.env.NETLIFY === 'true' || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+const canUseLocalDb = process.env.USE_LOCAL_DB === 'true' || (!isHostedRuntime && process.env.NODE_ENV !== 'production');
+const isMock = hasMissingSupabaseConfig && canUseLocalDb;
+
+if (hasMissingSupabaseConfig && !canUseLocalDb) {
+  throw new Error('Supabase is not configured. Set SUPABASE_URL and SUPABASE_SERVICE_KEY in the server/Netlify environment.');
+}
 
 let supabaseClientInstance;
 
@@ -33,7 +42,7 @@ if (!isMock) {
 } else {
   console.log('⚠️ Supabase credentials not configured. Using local JSON Database (db.json)');
   
-  const dbPath = path.resolve(__dirname, '../../db.json');
+  const dbPath = path.resolve(serverRoot, 'db.json');
 
   const readDb = () => {
     if (!fs.existsSync(dbPath)) {
@@ -443,5 +452,7 @@ if (!isMock) {
   };
 }
 
+export const databaseMode = isMock ? 'local-json' : 'supabase';
+export const isUsingLocalDb = isMock;
 export const supabase = supabaseClientInstance;
 export default supabase;

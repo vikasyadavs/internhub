@@ -3,6 +3,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
+import supabase, { databaseMode } from './config/supabase.js';
 
 dotenv.config();
 
@@ -72,8 +73,37 @@ app.use('/api/today-tasks', todayTasksRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/search', searchRoutes);
 
-// Health check
+// Health checks
 app.get('/api/health', (req, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
+app.get('/api/health/db', async (req, res) => {
+  try {
+    const { count, error } = await supabase
+      .from('users')
+      .select('id', { count: 'exact' })
+      .limit(1);
+
+    if (error) {
+      return res.status(500).json({
+        status: 'error',
+        mode: databaseMode,
+        message: error.message,
+      });
+    }
+
+    return res.json({
+      status: 'ok',
+      mode: databaseMode,
+      usersCount: count ?? null,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err) {
+    return res.status(500).json({
+      status: 'error',
+      mode: databaseMode,
+      message: err.message,
+    });
+  }
+});
 
 // Global error handler
 app.use((err, req, res, next) => {
